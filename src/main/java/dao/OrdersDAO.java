@@ -34,11 +34,16 @@ public class OrdersDAO {
                 + ":" + resultSet.getString(3)
                 + ":" + resultSet.getString(4);
             System.out.println("Заказ:" + str);*/
-            String str = "|\t" + resultSet.getString("id")
+           /* String str = "|\t" + resultSet.getString("id")
                 + "|\t\t  " + resultSet.getString(2)
                 + "|\t   " + resultSet.getString(3)
                 + "|\t\t\t" + resultSet.getString(4) + "|";
-            System.out.println(str);
+            System.out.println(str);*/
+            System.out.printf("| %2s | %7s | %6s | %10s |%n",
+                resultSet.getString(1),
+                resultSet.getString(2),
+                resultSet.getString(3),
+                resultSet.getString(4));
         }
         System.out.println("+----+---------+--------+------------+");
         resultSet.close();

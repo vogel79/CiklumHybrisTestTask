@@ -29,7 +29,16 @@ public class ProductsService {
         }
     }
 
-    public void deleteOrders() {
+    public void selectProductsView() throws SQLException {
+        try (Connection connection = connectionUtils.getConnection()) {
+            ProductDAO productsDAO = new ProductDAO(connection);
+            productsDAO.selectProductsView(connection);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteProducts() {
         try (Connection connection = connectionUtils.getConnection()) {
             OrdersDAO ordersDAO = new OrdersDAO(connection);
             ordersDAO.removeOrders(connection);
@@ -38,7 +47,7 @@ public class ProductsService {
         }
     }
 
-    public void updateOrders(Orders orders) throws SQLException {
+    public void updateProducts(Orders orders) throws SQLException {
         try (Connection connection = connectionUtils.getConnection()) {
             OrdersDAO ordersDAO = new OrdersDAO(connection);
             ordersDAO.updateOrders(connection, orders);

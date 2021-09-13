@@ -28,12 +28,13 @@ public class Controller {
         while (!"0".equals(input)) {
             switch (input) {
                 case "1":
-                  //  createOrders(reader);
-                    createProducts(reader);
+                    createOrders(reader);
+                   // createProducts(reader);
                     break;
                 case "2":
-                  //  readOrders();
-                    readProducts();
+                    readOrders();
+                  //  readProducts();
+                   // readProductsView();
                     break;
                 case "3":
                     updateOrders(reader);
@@ -114,9 +115,9 @@ public class Controller {
             System.out.println("Введите price:");
             int price = Integer.parseInt(reader.readLine());
             products.setPrice(price);
-          /*  System.out.println("Введите status:");
+            System.out.println("Введите status:");
             ProductsStatus status = ProductsStatus.valueOf(reader.readLine());
-            products.setStatus(status);*/
+            products.setStatus(status);
             System.out.println("Введите created_at:");
             Date created_at = Date.valueOf(reader.readLine());
             products.setCreated_at(created_at);
@@ -125,6 +126,14 @@ public class Controller {
             throwables.printStackTrace();
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public void readProductsView() {
+        try {
+            productsService.selectProductsView();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 
