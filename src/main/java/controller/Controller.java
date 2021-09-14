@@ -28,12 +28,12 @@ public class Controller {
         while (!"0".equals(input)) {
             switch (input) {
                 case "1":
-                    createOrders(reader);
-                   // createProducts(reader);
+                   // createOrders(reader);
+                    createProducts(reader);
                     break;
                 case "2":
-                    readOrders();
-                  //  readProducts();
+                   // readOrders();
+                    readProducts();
                    // readProductsView();
                     break;
                 case "3":
@@ -116,8 +116,26 @@ public class Controller {
             int price = Integer.parseInt(reader.readLine());
             products.setPrice(price);
             System.out.println("Введите status:");
-            ProductsStatus status = ProductsStatus.valueOf(reader.readLine());
-            products.setStatus(status);
+           /* ProductsStatus status = ProductsStatus.valueOf(reader.readLine());
+            products.setStatus(status);*/
+            System.out.println("1 - out_of_stock");
+            System.out.println("2 - in_stock");
+            System.out.println("3 - running_low");
+            String input = reader.readLine();
+            switch (input) {
+                case "1":
+                    ProductsStatus status = ProductsStatus.out_of_stock;
+                    products.setStatus(status);
+                    break;
+                case "2":
+                    status = ProductsStatus.in_stock;
+                    products.setStatus(status);
+                    break;
+                case "3":
+                    status = ProductsStatus.running_low;
+                    products.setStatus(status);
+                    break;
+            }
             System.out.println("Введите created_at:");
             Date created_at = Date.valueOf(reader.readLine());
             products.setCreated_at(created_at);
