@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Controller {
     OrdersService ordersService = new OrdersService();
@@ -28,12 +31,12 @@ public class Controller {
         while (!"0".equals(input)) {
             switch (input) {
                 case "1":
-                   // createOrders(reader);
-                    createProducts(reader);
+                    createOrders(reader);
+                  //  createProducts(reader);
                     break;
                 case "2":
-                   // readOrders();
-                    readProducts();
+                    readOrders();
+                   // readProducts();
                    // readProductsView();
                     break;
                 case "3":
@@ -63,13 +66,19 @@ public class Controller {
             System.out.println("Введите user_id:");
             int user_id = Integer.parseInt(reader.readLine());
             orders.setUser_id(user_id);
-            System.out.println("Введите status:");
-            String status = reader.readLine();
-            orders.setStatus(status);
-            System.out.println("Введите created_at:");
-            String created_at = reader.readLine();
-            orders.setCreated_at(created_at);
-            ordersService.createOrders(orders);
+           // System.out.println("Введите status:");
+          //  String status = reader.readLine();
+          //  orders.setStatus(status);
+          //  System.out.println("Введите created_at:");
+         //   String created_at = reader.readLine();
+         //   orders.setCreated_at(created_at);
+            System.out.println("Введите products id's");
+            List<Integer> arr;
+               // int n = Integer.parseInt(r.readLine().strip());
+                arr = Arrays.stream(reader.readLine().strip().split(" "))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+            ordersService.createOrders(orders, arr);
             } catch (SQLException | IOException throwables) {
                 throwables.printStackTrace();
             } catch (NumberFormatException e) {

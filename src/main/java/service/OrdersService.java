@@ -7,12 +7,13 @@ import utils.ConnectionUtils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 public class OrdersService {
    // private final OrdersDAO ordersDAO = new OrdersDAO();
 
     ConnectionUtils connectionUtils = new ConnectionUtils();
-    public void createOrders(Orders orders) throws SQLException {
+    public void createOrders(Orders orders, List<Integer> productIds) throws SQLException {
         try (Connection connection = connectionUtils.getConnection()) {
             OrdersDAO ordersDAO = new OrdersDAO(connection);
           /*  Class.forName("com.mysql.cj.jdbc.Driver");
@@ -22,7 +23,7 @@ public class OrdersService {
             try (Connection connection = DriverManager.getConnection(url, login, password)) {
                 ordersDAO.createOrders(connection, orders);
             }*/
-            ordersDAO.createOrders(connection, orders);
+            ordersDAO.createOrders(connection, orders, productIds);
         } catch (Exception e) {
             e.printStackTrace();
         }

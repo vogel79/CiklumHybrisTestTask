@@ -1,8 +1,11 @@
 package dao;
 
+import domain.OrderStatus;
 import domain.Orders;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class OrdersDAO {
     private final Connection connection;
@@ -11,14 +14,32 @@ public class OrdersDAO {
         this.connection = connection;
     }
 
-    public void createOrders(Connection connection, Orders orders) throws SQLException {
+    public void createOrders(Connection connection, Orders orders, List<Integer> productsIds) throws SQLException {
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(System.currentTimeMillis());
+        String currentDate = formatter.format(date);
         String sqlQuery = "insert into orders (id, user_id, status, created_at) values (?,?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             statement.setInt(1, orders.getId());
             statement.setInt(2, orders.getUser_id());
-            statement.setString(3, orders.getStatus());
-            statement.setString(4, orders.getCreated_at());
+           // statement.setString(3, orders.getStatus());
+           // statement.setString(3, "created");
+            statement.setString(3, OrderStatus.CREATED.name());
+           // statement.setString(4, orders.getCreated_at());
+            statement.setString(4, currentDate);
             statement.executeUpdate();
+        }
+        insertOrderItems(orders.getId(), productsIds);
+    }
+
+    private void insertOrderItems(int orderId, List<Integer> ids) throws SQLException {
+        for (int productId: ids) {
+            String sqlQuery = "insert into order_items (order_id, product_id) values (?,?)";
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                statement.setInt(1, orderId);
+                statement.setInt(2, productId);
+                statement.executeUpdate();
+            }
         }
     }
 
