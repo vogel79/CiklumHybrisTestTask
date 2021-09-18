@@ -1,58 +1,40 @@
 package service;
 
-import dao.OrdersDAO;
 import dao.ProductDAO;
-import domain.Orders;
 import domain.Products;
-import utils.ConnectionUtils;
-
-import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ProductsService {
-    ConnectionUtils connectionUtils = new ConnectionUtils();
+    private final ProductDAO productDAO;
+
+    public ProductsService(ProductDAO productDAO) {
+        this.productDAO = productDAO;
+    }
+
     public void createProducts(Products products) throws SQLException {
-        try (Connection connection = connectionUtils.getConnection()) {
-            ProductDAO productDAO = new ProductDAO(connection);
-            productDAO.createProduct(connection, products);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        productDAO.createProduct(products);
     }
 
     public void selectProducts() throws SQLException {
-        try (Connection connection = connectionUtils.getConnection()) {
-            ProductDAO productsDAO = new ProductDAO(connection);
-            productsDAO.selectProducts(connection);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        productDAO.selectProducts();
     }
 
     public void selectProductsView() throws SQLException {
-        try (Connection connection = connectionUtils.getConnection()) {
-            ProductDAO productsDAO = new ProductDAO(connection);
-            productsDAO.selectProductsView(connection);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        productDAO.selectProductsView();
     }
 
-    public void deleteProducts() {
-        try (Connection connection = connectionUtils.getConnection()) {
-            OrdersDAO ordersDAO = new OrdersDAO(connection);
-            ordersDAO.removeOrders(connection);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void deleteProducts() throws SQLException {
+        productDAO.removeProducts();
     }
 
-    public void updateProducts(Orders orders) throws SQLException {
+    public void deleteProductById(int id) throws SQLException {
+        productDAO.removeProductsById(id);
+    }
+
+    /* public void updateProducts(Orders orders) throws SQLException {
         try (Connection connection = connectionUtils.getConnection()) {
-            OrdersDAO ordersDAO = new OrdersDAO(connection);
+            ProductsDAO ordersDAO = new OrdersDAO(connection);
             ordersDAO.updateOrders(connection, orders);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-    }
+    }*/
 }
