@@ -79,7 +79,7 @@ public class Controller {
                 case "10":
                     deleteOrders();
                 case "11":
-                    showViews();
+                    showViews(reader);
                     break;
                 case "12":
                     deleteProducts(reader);
@@ -143,13 +143,6 @@ public class Controller {
         }
     }
 
-    public void readProductsView() {
-        try {
-            productsService.selectProductsView();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
 
     public void readProducts() {
         try {
@@ -159,13 +152,7 @@ public class Controller {
         }
     }
 
-    public void listProductsView() {
-        try {
-            ordersService.listProductsView();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
+
 
     public void updateProducts(BufferedReader reader) {
         Orders orders = new Orders();
@@ -278,8 +265,56 @@ public class Controller {
         }
     }
 
-    private void showViews() {
+    private void showViews(BufferedReader reader) {
         readProductsView();
         listProductsView();
+        listOrdersView();
+       // listOrdersById(reader);
+        listOrdersByIdView(reader);
+    }
+
+    public void readProductsView() {
+        try {
+            productsService.selectProductsView();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public void listProductsView() {
+        try {
+            ordersService.listProductsView();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    private void listOrdersView() {
+        try {
+            ordersService.listOrdersView();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+   /* private void listOrdersById(BufferedReader reader) {
+        //Orders orders = new Orders();
+        try {
+            System.out.println("Введите order_id:");
+            int id = Integer.parseInt(reader.readLine());
+            ordersService.listOrdersById(id);
+        } catch (SQLException | IOException throwables) {
+            throwables.printStackTrace();
+        }
+    }*/
+
+    private void listOrdersByIdView(BufferedReader reader) {
+        try {
+            System.out.println("Введите order_id:");
+            int id = Integer.parseInt(reader.readLine());
+            ordersService.listOrdedersByIdView(id);
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

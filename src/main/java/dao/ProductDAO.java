@@ -35,18 +35,18 @@ public class ProductDAO {
         try (Connection connection = connectionUtils.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM products");
-            System.out.println("+----+------+-------+--------+------------+");
-            System.out.println("| id | name | price | status | created_at |");
-            System.out.println("+----+------+-------+--------+------------+");
+            System.out.println("+-----+--------+-------+--------------+------------+");
+            System.out.println("| id  |  name  | price |    status    | created_at |");
+            System.out.println("+-----+--------+-------+--------------+------------+");
             while (resultSet.next()) {
-                System.out.printf("| %2s | %4s | %5s | %9s | %9s |%n",
+                System.out.printf("| %3s | %6s | %5s | %12s | %9s |%n",
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4),
                     resultSet.getString(5));
             }
-            System.out.println("+----+------+-------+--------+------------+");
+            System.out.println("+-----+--------+-------+--------------+------------+");
             resultSet.close();
             statement.close();
         }

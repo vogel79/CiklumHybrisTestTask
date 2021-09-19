@@ -38,7 +38,20 @@ public class OrdersService {
         ordersDAO.updateOrdersItems(orderItems, orderId, productId);
     }
 
+    public void listOrdersView() throws SQLException {
+        ordersDAO.listOrdersView();
+    }
+
+    public void listOrdedersByIdView(int id) throws SQLException {
+        ordersDAO.listOrdersByIdView(id);
+    }
+
     public void listProductsView() throws SQLException {
         ordersDAO.listProductsView();
     }
+
+    public void listOrdersById(int id) throws SQLException {
+        ordersDAO.listOrdersById(id);
+    }
+
 }
