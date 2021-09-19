@@ -37,7 +37,7 @@ public class OrdersDAO {
     }
 
     private void insertOrderItems(Connection connection, int orderId, List<Integer> ids) throws SQLException {
-        for (int productId: ids) {
+        for (int productId : ids) {
             String sqlQuery = "insert into order_items (order_id, product_id) values (?,?)";
             try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
                 statement.setInt(1, orderId);
@@ -86,11 +86,13 @@ public class OrdersDAO {
         }
     }
 
-    public void updateOrders(Orders orders) throws SQLException {
+    public void updateOrders(int orderId) throws SQLException {
         try (Connection connection = connectionUtils.getConnection()) {
-            String sqlQuery = "update orders set status = ?";
+            String sqlQuery = "update orders set status = ? where id = ?";
             try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
-                statement.setString(1, orders.getStatus());
+                // statement.setString(1, orders.getStatus());
+                statement.setString(1, OrderStatus.COMPLETED.name());
+                statement.setInt(2, orderId);
                 statement.executeUpdate();
             }
         }
@@ -105,15 +107,7 @@ public class OrdersDAO {
                 statement.setInt(3, productId);
                 statement.executeUpdate();
             }
-        }
-    }
-
-    public void removeOrders() throws SQLException {
-        try (Connection connection = connectionUtils.getConnection()) {
-            String sqlQuery = "Delete FROM orders";
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.executeUpdate(sqlQuery);
-            statement.close();
+            updateOrders(orderId);
         }
     }
 
@@ -190,26 +184,6 @@ public class OrdersDAO {
                 }
                 System.out.println("+----------+----------------------+--------------+---------------------------------+" +
                     "--------------------+");
-                resultSet.close();
-            }
-        }
-    }
-
-    public void listOrdersById(int id) throws SQLException {
-        try (Connection connection = connectionUtils.getConnection()) {
-            String sqlQuery = "select o.id, o.created_at from orders o where o.id = ?";
-            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
-                statement.setInt(1, id);
-                ResultSet resultSet = statement.executeQuery();
-                System.out.println("+----------+--------------------+");
-                System.out.println("| Order ID | Order Created Date |");
-                System.out.println("+----------+--------------------+");
-                while (resultSet.next()) {
-                    System.out.printf("| %8s | %20s | %n",
-                        resultSet.getString(1),
-                        resultSet.getString(2));
-                }
-                System.out.println("+----------+---------------------+");
                 resultSet.close();
             }
         }

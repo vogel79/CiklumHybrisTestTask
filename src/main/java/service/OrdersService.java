@@ -3,6 +3,7 @@ package service;
 import dao.OrdersDAO;
 import domain.OrderItems;
 import domain.Orders;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -26,14 +27,6 @@ public class OrdersService {
         ordersDAO.selectOrdersItems();
     }
 
-    public void deleteOrders() throws SQLException {
-        ordersDAO.removeOrders();
-    }
-
-    public void updateOrders(Orders orders) throws SQLException {
-        ordersDAO.updateOrders(orders);
-    }
-
     public void updateOrderItems(OrderItems orderItems, int orderId, int productId) throws SQLException {
         ordersDAO.updateOrdersItems(orderItems, orderId, productId);
     }
@@ -49,9 +42,4 @@ public class OrdersService {
     public void listProductsView() throws SQLException {
         ordersDAO.listProductsView();
     }
-
-    public void listOrdersById(int id) throws SQLException {
-        ordersDAO.listOrdersById(id);
-    }
-
 }

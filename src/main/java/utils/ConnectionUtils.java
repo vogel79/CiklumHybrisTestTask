@@ -17,11 +17,11 @@ public class ConnectionUtils {
         return DriverManager.getConnection(url, username, password);
     }
 
-    private Properties loadProperties(){
+    private Properties loadProperties() {
         Properties properties = new Properties();
         try (InputStream in = getClass().getClassLoader().getResourceAsStream("local.properties")) {
             properties.load(in);
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
         return properties;

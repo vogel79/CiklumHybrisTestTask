@@ -32,20 +32,41 @@ public class Controller {
 
     public void readConsole() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-       // System.out.println("Добро пожаловать в интернет-магазин!");
+        // System.out.println("Добро пожаловать в интернет-магазин!");
+        System.out.println("Выберите действие или нажмите '0' для выхода: ");
+        System.out.println("1 - продукты");
+        System.out.println("2 - заказы");
+        System.out.println("3 - Views");
+        String input = reader.readLine();
+        while (!"0".equals(input)) {
+            switch (input) {
+                case "1":
+                    products();
+                    break;
+                case "2":
+                    orders();
+                    break;
+                case "3":
+                    showViews(reader);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Неизвестный выбор!");
+            }
+            System.out.println("Выберите действие или нажмите '0' для выхода: ");
+            System.out.println("1 - продукты");
+            System.out.println("2 - заказы");
+            System.out.println("3 - Views");
+            input = reader.readLine();
+        }
+    }
+
+    public void products() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Выберите действие или нажмите '0' для выхода: ");
         System.out.println("1 - создание продукта");
         System.out.println("2 - просмотр продуктов");
-        System.out.println("3 - обновление продукта");
-        System.out.println("4 - удаление продукта");
-        System.out.println("5 - создание заказа");
-        System.out.println("6 - просмотр заказов");
-        System.out.println("7 - просмотр order_items");
-        System.out.println("8 - обновление заказа");
-        System.out.println("9 - обновление order_items");
-        System.out.println("10 - удаление заказа");
-        System.out.println("11 - Views");
-        System.out.println("12 - удаление всех продуктов");
+        System.out.println("3 - удаление продукта по id");
+        System.out.println("4 - удаление всех продуктов");
         String input = reader.readLine();
         while (!"0".equals(input)) {
             switch (input) {
@@ -56,32 +77,9 @@ public class Controller {
                     readProducts();
                     break;
                 case "3":
-                    updateProducts(reader);
-                    break;
-                case "4":
                     deleteProductById(reader);
                     break;
-                case "5":
-                    createOrders(reader);
-                    break;
-                case "6":
-                    readOrders();
-                    break;
-                case "7":
-                    readOrdersItems();
-                    break;
-                case "8":
-                    updateOrders(reader);
-                    break;
-                case "9":
-                    updateOrdersItems(reader);
-                    break;
-                case "10":
-                    deleteOrders();
-                case "11":
-                    showViews(reader);
-                    break;
-                case "12":
+                case "4":
                     deleteProducts(reader);
                     break;
                 default:
@@ -90,16 +88,79 @@ public class Controller {
             System.out.println("Выберите действие или нажмите '0' для выхода: ");
             System.out.println("1 - создание продукта");
             System.out.println("2 - просмотр продуктов");
-            System.out.println("3 - обновление продукта");
-            System.out.println("4 - удаление продукта");
-            System.out.println("5 - создание заказа");
-            System.out.println("6 - просмотр заказов");
-            System.out.println("7 - просмотр order_items");
-            System.out.println("8 - обновление заказа");
-            System.out.println("9 - обновление order_items");
-            System.out.println("10 - удаление заказа");
-            System.out.println("11 - Views");
-            System.out.println("12 - удаление всех продуктов");
+            System.out.println("3 - удаление продукта по id");
+            System.out.println("4 - удаление всех продуктов");
+            input = reader.readLine();
+        }
+    }
+
+    public void orders() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Выберите действие или нажмите '0' для выхода: ");
+        System.out.println("1 - создание заказа");
+        System.out.println("2 - просмотр заказов");
+        System.out.println("3 - просмотр order_items");
+        System.out.println("4 - обновление order_items");
+        String input = reader.readLine();
+        while (!"0".equals(input)) {
+            switch (input) {
+                case "1":
+                    createOrders(reader);
+                    break;
+                case "2":
+                    readOrders();
+                    break;
+                case "3":
+                    readOrdersItems();
+                    break;
+                case "4":
+                    updateOrdersItems(reader);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Неизвестный выбор!");
+            }
+            System.out.println("Выберите действие или нажмите '0' для выхода: ");
+            System.out.println("1 - создание заказа");
+            System.out.println("2 - просмотр заказов");
+            System.out.println("3 - просмотр order_items");
+            System.out.println("4 - обновление order_items");
+            input = reader.readLine();
+        }
+    }
+
+    private void showViews(BufferedReader reader) throws IOException {
+        System.out.println("Выберите действие или нажмите '0' для выхода: ");
+        System.out.println("1 - Product Name | Product Price | Product Status | for all products");
+        System.out.println("2 - List all products, which have been ordered at least once, " +
+            "with total ordered quantity sorted descending by the quantity");
+        System.out.println("3 - | Order ID | Products total Price | Product Name | Products Quantity in orderEntry " +
+            "| Order Created Date [YYYY-MM-DD HH:MM ] | by order Id");
+        System.out.println("4 - List all orders using previous view");
+        String input = reader.readLine();
+        while (!"0".equals(input)) {
+            switch (input) {
+                case "1":
+                    readProductsView();
+                    break;
+                case "2":
+                    listProductsView();
+                    break;
+                case "3":
+                    listOrdersByIdView(reader);
+                    break;
+                case "4":
+                    listOrdersView();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Неизвестный выбор!");
+            }
+            System.out.println("Выберите действие или нажмите '0' для выхода: ");
+            System.out.println("1 - Product Name | Product Price | Product Status | for all products");
+            System.out.println("2 - List all products, which have been ordered at least once, " +
+                "with total ordered quantity sorted descending by the quantity");
+            System.out.println("3 - | Order ID | Products total Price | Product Name | Products Quantity in orderEntry " +
+                "| Order Created Date [YYYY-MM-DD HH:MM ] | by order Id");
+            System.out.println("4 - List all orders using previous view");
             input = reader.readLine();
         }
     }
@@ -143,7 +204,6 @@ public class Controller {
         }
     }
 
-
     public void readProducts() {
         try {
             productsService.selectProducts();
@@ -152,28 +212,12 @@ public class Controller {
         }
     }
 
-
-
-    public void updateProducts(BufferedReader reader) {
-        Orders orders = new Orders();
-        System.out.println("Введите новый status:");
-        try {
-            String status = reader.readLine();
-            orders.setStatus(status);
-            ordersService.updateOrders(orders);
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
-        } catch (NumberFormatException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
     private void deleteProducts(BufferedReader reader) {
         try {
             System.out.println("Введите пароль:");
             String password = reader.readLine();
             if (password.equals("qwerty"))
-            productsService.deleteProducts();
+                productsService.deleteProducts();
             else System.out.println("Неверный пароль!");
         } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
@@ -225,29 +269,15 @@ public class Controller {
         }
     }
 
-    public void updateOrders(BufferedReader reader) {
-        Orders orders = new Orders();
-        System.out.println("Введите новый status:");
-        try {
-            String status = reader.readLine();
-            orders.setStatus(status);
-            ordersService.updateOrders(orders);
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
-        } catch (NumberFormatException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
     public void updateOrdersItems(BufferedReader reader) {
         OrderItems orderItems = new OrderItems();
         System.out.println("Введите order_id:");
         try {
             int id = Integer.parseInt(reader.readLine());
-           // orderItems.setOrder_id(id);
+            // orderItems.setOrder_id(id);
             System.out.println("Введите product_id:");
             int productId = Integer.parseInt(reader.readLine());
-          //  orderItems.setProduct_id(productId);
+            //  orderItems.setProduct_id(productId);
             System.out.println("Введите quantity:");
             int quantity = Integer.parseInt(reader.readLine());
             orderItems.setQuantity(quantity);
@@ -255,22 +285,6 @@ public class Controller {
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public void deleteOrders() {
-        try {
-            ordersService.deleteOrders();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
-    private void showViews(BufferedReader reader) {
-        readProductsView();
-        listProductsView();
-        listOrdersView();
-       // listOrdersById(reader);
-        listOrdersByIdView(reader);
     }
 
     public void readProductsView() {
@@ -296,17 +310,6 @@ public class Controller {
             throwables.printStackTrace();
         }
     }
-
-   /* private void listOrdersById(BufferedReader reader) {
-        //Orders orders = new Orders();
-        try {
-            System.out.println("Введите order_id:");
-            int id = Integer.parseInt(reader.readLine());
-            ordersService.listOrdersById(id);
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
-        }
-    }*/
 
     private void listOrdersByIdView(BufferedReader reader) {
         try {

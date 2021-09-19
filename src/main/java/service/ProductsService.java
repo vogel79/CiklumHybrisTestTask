@@ -2,6 +2,7 @@ package service;
 
 import dao.ProductDAO;
 import domain.Products;
+
 import java.sql.SQLException;
 
 public class ProductsService {
@@ -30,11 +31,4 @@ public class ProductsService {
     public void deleteProductById(int id) throws SQLException {
         productDAO.removeProductsById(id);
     }
-
-    /* public void updateProducts(Orders orders) throws SQLException {
-        try (Connection connection = connectionUtils.getConnection()) {
-            ProductsDAO ordersDAO = new OrdersDAO(connection);
-            ordersDAO.updateOrders(connection, orders);
-        }
-    }*/
 }
