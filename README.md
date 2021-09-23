@@ -17,3 +17,9 @@ in background
  d. List all orders using previous view
 
 5. Remove product by ID / Remove all products only if you enter a password
+
+Start up Application via Maven:
+
+mvn clean install
+
+mvn exec:java -D exec.mainClass=Application

@@ -24,15 +24,21 @@ public class OrdersDAO {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date date = new Date(System.currentTimeMillis());
             String currentDate = formatter.format(date);
-            String sqlQuery = "insert into orders (id, user_id, status, created_at) values (?,?,?,?)";
-            try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
-                statement.setInt(1, orders.getId());
-                statement.setInt(2, userIdGenerator.generate());
-                statement.setString(3, OrderStatus.CREATED.name());
-                statement.setString(4, currentDate);
+            String sqlQuery = "insert into orders (user_id, status, created_at) values (?,?,?)";
+            try (PreparedStatement statement = connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setInt(1, userIdGenerator.generate());
+                statement.setString(2, OrderStatus.CREATED.name());
+                statement.setString(3, currentDate);
                 statement.executeUpdate();
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        orders.setId(generatedKeys.getInt(1));
+                    } else {
+                        throw new SQLException("Creating order failed, no ID obtained!");
+                    }
+                    insertOrderItems(connection, orders.getId(), productsIds);
+                }
             }
-            insertOrderItems(connection, orders.getId(), productsIds);
         }
     }
 
@@ -51,17 +57,17 @@ public class OrdersDAO {
         try (Connection connection = connectionUtils.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM orders");
-            System.out.println("+-----+---------+----------+------------------+");
-            System.out.println("| id  | user_id |  status  |    created_at    |");
-            System.out.println("+-----+---------+----------+------------------+");
+            System.out.println("+-----+---------+------------+------------------+");
+            System.out.println("| id  | user_id |   status   |    created_at    |");
+            System.out.println("+-----+---------+------------+------------------+");
             while (resultSet.next()) {
-                System.out.printf("| %3s | %7s | %8s | %17s |%n",
+                System.out.printf("| %3s | %7s | %10s | %16s |%n",
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4));
             }
-            System.out.println("+-----+---------+-----------+------------------+");
+            System.out.println("+-----+---------+------------+------------------+");
             resultSet.close();
             statement.close();
         }
@@ -116,15 +122,15 @@ public class OrdersDAO {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select name, sum(quantity) from products, order_items " +
                 "where products.id =order_items.product_id and quantity > 0 group by name order by sum(quantity) desc;");
-            System.out.println("+--------+---------------+");
-            System.out.println("|  name  | sum(quantity) |");
-            System.out.println("+--------+---------------+");
+            System.out.println("+----------+---------------+");
+            System.out.println("|   name   | sum(quantity) |");
+            System.out.println("+----------+---------------+");
             while (resultSet.next()) {
-                System.out.printf("| %6s | %13s | %n",
+                System.out.printf("| %8s | %13s | %n",
                     resultSet.getString(1),
                     resultSet.getString(2));
             }
-            System.out.println("+--------+---------------+");
+            System.out.println("+----------+---------------+");
             resultSet.close();
             statement.close();
         }

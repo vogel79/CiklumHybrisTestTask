@@ -14,8 +14,8 @@ import utils.UserIdGenerator;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +32,6 @@ public class Controller {
 
     public void readConsole() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        // System.out.println("Добро пожаловать в интернет-магазин!");
         System.out.println("Выберите действие или нажмите '0' для выхода: ");
         System.out.println("1 - продукты");
         System.out.println("2 - заказы");
@@ -167,10 +166,7 @@ public class Controller {
 
     public void createProducts(BufferedReader reader) {
         Products products = new Products();
-        System.out.println("Введите id:");
         try {
-            int id = Integer.parseInt(reader.readLine());
-            products.setId(id);
             System.out.println("Введите name:");
             String name = reader.readLine();
             products.setName(name);
@@ -231,20 +227,19 @@ public class Controller {
             productsService.deleteProductById(id);
         } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
         }
     }
 
     public void createOrders(BufferedReader reader) {
         Orders orders = new Orders();
-        System.out.println("Введите id:");
         try {
-            int id = Integer.parseInt(reader.readLine());
-            orders.setId(id);
-            System.out.println("Введите products id's");
+            System.out.println("Введите products id's через пробел:");
             List<Integer> array;
-            array = Arrays.stream(reader.readLine().strip().split(" "))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
+            array = Arrays.stream(reader.readLine()
+                .strip()
+                .split(" ")).map(Integer::parseInt).collect(Collectors.toList());
             ordersService.createOrders(orders, array);
         } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
@@ -274,10 +269,8 @@ public class Controller {
         System.out.println("Введите order_id:");
         try {
             int id = Integer.parseInt(reader.readLine());
-            // orderItems.setOrder_id(id);
             System.out.println("Введите product_id:");
             int productId = Integer.parseInt(reader.readLine());
-            //  orderItems.setProduct_id(productId);
             System.out.println("Введите quantity:");
             int quantity = Integer.parseInt(reader.readLine());
             orderItems.setQuantity(quantity);
